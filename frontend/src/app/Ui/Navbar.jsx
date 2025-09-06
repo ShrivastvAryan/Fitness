@@ -1,51 +1,120 @@
-import React from 'react'
-import { Heart ,ShoppingBag,Search} from 'lucide-react'
+"use client"
+import React from "react"
+import { Heart, ShoppingBag, Search } from "lucide-react"
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu"
+import Link from "next/link"
 
 const Navbar = () => {
-
-    const NavList=[
-        { name:'New & Featured', link:"/new" },
-        { name:'Men', link:"/men" },
-        { name:'Women', link:"/women" },
-        { name:'Kids', link:"/kids" },
-    ]
+  const NavList = [
+    {
+      name: "New & Featured",
+      subcategories: [
+        { cat: "Tshirts", link: "/tshirt" },
+        { cat: "Shoes", link: "/shoes" },
+        { cat: "Accessories", link: "/accessories" },
+      ],
+    },
+    {
+      name: "Men",
+      subcategories: [
+        { cat: "Tshirts", link: "/" },
+        { cat: "Shoes", link: "/" },
+        { cat: "Accessories", link: "/" },
+      ],
+    },
+    {
+      name: "Women",
+      subcategories: [
+        { cat: "Tshirts", link: "/" },
+        { cat: "Shoes", link: "/" },
+        { cat: "Accessories", link: "/" },
+      ],
+    },
+    {
+      name: "Kids",
+      subcategories: [
+        { cat: "Tshirts", link: "/" },
+        { cat: "Shoes", link: "/" },
+        { cat: "Accessories", link: "/" },
+      ],
+    },
+  ]
 
   return (
     <>
-    <div>
-        <nav className=" w-screen py-3 px-6 font-semibold flex flex-row justify-end gap-2 text-sm">
-           <p>Join Us  |</p>
-           <p>Login  |</p>
-           <p>Help</p>
+      {/* Top Small Navbar */}
+      <div>
+        <nav className="w-screen py-3 px-6 font-semibold flex flex-row justify-end gap-4 text-sm">
+          <p className="cursor-pointer hover:underline">Join Us</p>
+          <p className="cursor-pointer hover:underline">Login</p>
+          <p className="cursor-pointer hover:underline">Help</p>
         </nav>
-    </div>
-    <div>
-       <nav className="bg-gray-200 w-screen flex flex-row font-semibold relative">
-       <div className=" w-[20%] text-4xl flex justify-center"></div>
+      </div>
 
-       <div className="w-[50%] flex flex-row justify-center gap-6 items-center text-md">
-        {NavList.map((item, index) => (
-         <div key={index}>{item.name}</div>
-       ))}
-       </div>
+      {/* Main Navbar */}
+      <div>
+        <nav className="bg-gray-200 w-screen flex flex-row items-center font-semibold relative px-6 py-4">
+          {/* Left (Logo Placeholder) */}
+          <div className="w-[20%] text-3xl font-bold flex justify-center">
+            <Link href='/'>
+            LOGO
+            </Link>
+          </div>
 
-       <div className=" w-[30%] flex flex-row items-center justify-around gap-4">
-        
-        <div className='flex flex-row items-center gap-6'>
+          {/* Middle (Navigation Menu with shadcn/ui) */}
+          <div className="w-[50%] flex justify-center">
+            <NavigationMenu>
+              <NavigationMenuList>
+                {NavList.map((item, index) => (
+                  <NavigationMenuItem key={index}>
+                    <NavigationMenuTrigger>{item.name}</NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <ul className="p-4 w-48 space-y-2">
+                        {item.subcategories.map((sub, subIndex) => (
+                          <li key={subIndex}>
+                            <NavigationMenuLink asChild>
+                              <Link
+                                href={sub.link}
+                                className="block p-2 rounded-md hover:bg-gray-100 transition"
+                              >
+                                {sub.cat}
+                              </Link>
+                            </NavigationMenuLink>
+                          </li>
+                        ))}
+                      </ul>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+                ))}
+              </NavigationMenuList>
+            </NavigationMenu>
+          </div>
 
-        <div className='flex justify-center items-center '>
-        <Search/>
-        <input type="text" placeholder="Search" className="p-1 px-2 w-[70%] m-4 rounded-2xl bg-gray-300"/>
-        </div>
-        
-        
-        <Heart />
-        <ShoppingBag />
-        </div>
-       </div>
-       </nav>
+          {/* Right (Search + Icons) */}
+          <div className="w-[30%] flex flex-row items-center justify-end gap-6">
+            {/* Search */}
+            <div className="flex items-center bg-gray-300 px-3 py-1 rounded-2xl w-[60%]">
+              <Search className="w-4 h-4 text-gray-600" />
+              <input
+                type="text"
+                placeholder="Search"
+                className="bg-transparent outline-none px-2 w-full text-sm"
+              />
+            </div>
 
-    </div>
+            {/* Icons */}
+            <Heart className="cursor-pointer hover:text-red-500" />
+            <ShoppingBag className="cursor-pointer hover:text-gray-700" />
+          </div>
+        </nav>
+      </div>
     </>
   )
 }

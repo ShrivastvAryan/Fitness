@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "Nike Dri-FIT Running T-Shirt",
+    "category": "Tshirt",
+    "gender": "Men"
+  },
+  {
+    "id": 2,
+    "name": "Adidas Performance Tee",
+    "category": "Tshirt",
+    "gender": "Men"
+  },
+  {
+    "id": 3,
+    "name": "Puma Sportstyle Graphic Tee",
+    "category": "Tshirt",
+    "gender": "Men"
+  },
+  {
+    "id": 4,
+    "name": "Under Armour HeatGear Tee",
+    "category": "Tshirt",
+    "gender": "Men"
+  }
+]
