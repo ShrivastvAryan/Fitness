@@ -3,24 +3,40 @@
     "id": 1,
     "name": "Nike Dri-FIT Running T-Shirt",
     "category": "Tshirt",
-    "gender": "Men"
+    "gender": "Men",
+    "price": 1599,
+    "colors": ["Black", "White", "Blue"],
+    "sizes": ["S", "M", "L", "XL"],
+    "image": "/tshirts/nike-drifit.jpg"
   },
   {
     "id": 2,
     "name": "Adidas Performance Tee",
     "category": "Tshirt",
-    "gender": "Men"
+    "gender": "Men",
+    "price": 1799,
+    "colors": ["Grey", "Red", "Black"],
+    "sizes": ["S", "M", "L", "XL", "XXL"],
+    "image": "/tshirts/adidas-performance.jpg"
   },
   {
     "id": 3,
     "name": "Puma Sportstyle Graphic Tee",
     "category": "Tshirt",
-    "gender": "Men"
+    "gender": "Men",
+    "price": 1299,
+    "colors": ["White", "Yellow", "Green"],
+    "sizes": ["M", "L", "XL"],
+    "image": "/tshirts/puma-graphic.jpg"
   },
   {
     "id": 4,
     "name": "Under Armour HeatGear Tee",
     "category": "Tshirt",
-    "gender": "Men"
+    "gender": "Men",
+    "price": 1999,
+    "colors": ["Black", "Blue", "Orange"],
+    "sizes": ["S", "M", "L"],
+    "image": "/tshirts/ua-heatgear.jpg"
   }
 ]
