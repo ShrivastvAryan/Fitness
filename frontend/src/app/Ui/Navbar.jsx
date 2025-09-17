@@ -24,7 +24,7 @@ const Navbar = () => {
     {
       name: "Men",
       subcategories: [
-        { cat: "Tshirts", link: "/" },
+        { cat: "Tshirts", link: "/men/tshirt" },
         { cat: "Shoes", link: "/" },
         { cat: "Accessories", link: "/" },
       ],

@@ -2,41 +2,501 @@
   {
     "id": 1,
     "name": "Nike Dri-FIT Running T-Shirt",
-    "category": "Tshirt",
-    "gender": "Men",
+    "category": "tshirt",
+    "gender": "men",
     "price": 1599,
     "colors": ["Black", "White", "Blue"],
     "sizes": ["S", "M", "L", "XL"],
-    "image": "/tshirts/nike-drifit.jpg"
+    "image": "/sports/tshirts/nike-drifit-running.jpg"
   },
   {
     "id": 2,
-    "name": "Adidas Performance Tee",
-    "category": "Tshirt",
-    "gender": "Men",
+    "name": "Adidas Performance Training Tee",
+    "category": "tshirt",
+    "gender": "men",
     "price": 1799,
     "colors": ["Grey", "Red", "Black"],
     "sizes": ["S", "M", "L", "XL", "XXL"],
-    "image": "/tshirts/adidas-performance.jpg"
+    "image": "/sports/tshirts/adidas-performance-training.jpg"
   },
   {
     "id": 3,
     "name": "Puma Sportstyle Graphic Tee",
-    "category": "Tshirt",
-    "gender": "Men",
+    "category": "tshirt",
+    "gender": "men",
     "price": 1299,
     "colors": ["White", "Yellow", "Green"],
     "sizes": ["M", "L", "XL"],
-    "image": "/tshirts/puma-graphic.jpg"
+    "image": "/sports/tshirts/puma-graphic-sport.jpg"
   },
   {
     "id": 4,
-    "name": "Under Armour HeatGear Tee",
-    "category": "Tshirt",
-    "gender": "Men",
+    "name": "Under Armour HeatGear Athletic Tee",
+    "category": "tshirt",
+    "gender": "men",
     "price": 1999,
     "colors": ["Black", "Blue", "Orange"],
     "sizes": ["S", "M", "L"],
-    "image": "/tshirts/ua-heatgear.jpg"
+    "image": "/sports/tshirts/ua-heatgear-athletic.jpg"
+  },
+  {
+    "id": 5,
+    "name": "Nike Women's Pro Training Top",
+    "category": "tshirt",
+    "gender": "women",
+    "price": 1899,
+    "colors": ["Pink", "Black", "White"],
+    "sizes": ["XS", "S", "M", "L"],
+    "image": "/sports/tshirts/nike-women-pro-training.jpg"
+  },
+  {
+    "id": 6,
+    "name": "Adidas Climalite Women's Tee",
+    "category": "tshirt",
+    "gender": "women",
+    "price": 1599,
+    "colors": ["Purple", "Mint", "Grey"],
+    "sizes": ["S", "M", "L", "XL"],
+    "image": "/sports/tshirts/adidas-climalite-women.jpg"
+  },
+  {
+    "id": 7,
+    "name": "Reebok Kids Active T-Shirt",
+    "category": "tshirt",
+    "gender": "kids",
+    "price": 999,
+    "colors": ["Blue", "Red", "Green"],
+    "sizes": ["4-5Y", "6-7Y", "8-9Y", "10-11Y"],
+    "image": "/sports/tshirts/reebok-kids-active.jpg"
+  },
+  {
+    "id": 8,
+    "name": "Nike Air Jordan Basketball Shorts",
+    "category": "shorts",
+    "gender": "men",
+    "price": 2199,
+    "colors": ["Black", "White", "Red"],
+    "sizes": ["S", "M", "L", "XL"],
+    "image": "/sports/shorts/nike-jordan-basketball.jpg"
+  },
+  {
+    "id": 9,
+    "name": "Adidas 3-Stripes Training Shorts",
+    "category": "shorts",
+    "gender": "men",
+    "price": 1799,
+    "colors": ["Navy", "Black", "Grey"],
+    "sizes": ["M", "L", "XL", "XXL"],
+    "image": "/sports/shorts/adidas-3stripes-training.jpg"
+  },
+  {
+    "id": 10,
+    "name": "Puma Women's Active Shorts",
+    "category": "shorts",
+    "gender": "women",
+    "price": 1599,
+    "colors": ["Black", "Pink", "Blue"],
+    "sizes": ["XS", "S", "M", "L"],
+    "image": "/sports/shorts/puma-women-active.jpg"
+  },
+  {
+    "id": 11,
+    "name": "Under Armour Play Up Shorts",
+    "category": "shorts",
+    "gender": "women",
+    "price": 1999,
+    "colors": ["Grey", "Purple", "Teal"],
+    "sizes": ["S", "M", "L", "XL"],
+    "image": "/sports/shorts/ua-play-up-women.jpg"
+  },
+  {
+    "id": 12,
+    "name": "Nike Kids Dri-FIT Shorts",
+    "category": "shorts",
+    "gender": "kids",
+    "price": 1299,
+    "colors": ["Blue", "Black", "Orange"],
+    "sizes": ["4-5Y", "6-7Y", "8-9Y", "10-11Y", "12-13Y"],
+    "image": "/sports/shorts/nike-kids-drifit.jpg"
+  },
+  {
+    "id": 13,
+    "name": "Nike Tech Fleece Hoodie",
+    "category": "hoodie",
+    "gender": "men",
+    "price": 3999,
+    "colors": ["Black", "Grey", "Navy"],
+    "sizes": ["M", "L", "XL", "XXL"],
+    "image": "/sports/hoodies/nike-tech-fleece.jpg"
+  },
+  {
+    "id": 14,
+    "name": "Adidas Essentials 3-Stripes Hoodie",
+    "category": "hoodie",
+    "gender": "men",
+    "price": 3299,
+    "colors": ["Black", "Grey", "Navy"],
+    "sizes": ["S", "M", "L", "XL"],
+    "image": "/sports/hoodies/adidas-essentials-3stripes.jpg"
+  },
+  {
+    "id": 15,
+    "name": "Champion Powerblend Fleece Hoodie",
+    "category": "hoodie",
+    "gender": "women",
+    "price": 2799,
+    "colors": ["Pink", "Grey", "White"],
+    "sizes": ["S", "M", "L", "XL"],
+    "image": "/sports/hoodies/champion-powerblend-women.jpg"
+  },
+  {
+    "id": 16,
+    "name": "Puma Kids Essentials Hoodie",
+    "category": "hoodie",
+    "gender": "kids",
+    "price": 1999,
+    "colors": ["Blue", "Red", "Black"],
+    "sizes": ["6-7Y", "8-9Y", "10-11Y", "12-13Y"],
+    "image": "/sports/hoodies/puma-kids-essentials.jpg"
+  },
+  {
+    "id": 17,
+    "name": "Nike Air Max 270 Running Shoes",
+    "category": "shoes",
+    "gender": "men",
+    "price": 4999,
+    "colors": ["White", "Black", "Blue"],
+    "sizes": ["7", "8", "9", "10", "11", "12"],
+    "image": "/sports/shoes/nike-airmax-270-men.jpg"
+  },
+  {
+    "id": 18,
+    "name": "Adidas Ultraboost 22 Running Shoes",
+    "category": "shoes",
+    "gender": "men",
+    "price": 5999,
+    "colors": ["Black", "White", "Grey"],
+    "sizes": ["7", "8", "9", "10", "11"],
+    "image": "/sports/shoes/adidas-ultraboost-22-men.jpg"
+  },
+  {
+    "id": 19,
+    "name": "Puma RS-X³ Sneakers",
+    "category": "shoes",
+    "gender": "women",
+    "price": 3999,
+    "colors": ["White", "Pink", "Black"],
+    "sizes": ["5", "6", "7", "8", "9"],
+    "image": "/sports/shoes/puma-rsx3-women.jpg"
+  },
+  {
+    "id": 20,
+    "name": "Nike Air Force 1 Women's",
+    "category": "shoes",
+    "gender": "women",
+    "price": 4299,
+    "colors": ["White", "Black", "Pink"],
+    "sizes": ["5", "6", "7", "8", "9", "10"],
+    "image": "/sports/shoes/nike-airforce1-women.jpg"
+  },
+  {
+    "id": 21,
+    "name": "Adidas Kids Superstar Shoes",
+    "category": "shoes",
+    "gender": "kids",
+    "price": 2799,
+    "colors": ["White", "Black", "Red"],
+    "sizes": ["28", "30", "32", "34", "36"],
+    "image": "/sports/shoes/adidas-kids-superstar.jpg"
+  },
+  {
+    "id": 22,
+    "name": "Nike Revolution 6 Kids",
+    "category": "shoes",
+    "gender": "kids",
+    "price": 2299,
+    "colors": ["Blue", "Pink", "Black"],
+    "sizes": ["28", "30", "32", "34", "36"],
+    "image": "/sports/shoes/nike-revolution6-kids.jpg"
+  },
+  {
+    "id": 23,
+    "name": "Nike Dri-FIT Training Pants",
+    "category": "trackpants",
+    "gender": "men",
+    "price": 2799,
+    "colors": ["Black", "Grey", "Navy"],
+    "sizes": ["S", "M", "L", "XL"],
+    "image": "/sports/trackpants/nike-drifit-training-men.jpg"
+  },
+  {
+    "id": 24,
+    "name": "Adidas Tiro 21 Track Pants",
+    "category": "trackpants",
+    "gender": "men",
+    "price": 2499,
+    "colors": ["Black", "Navy", "Grey"],
+    "sizes": ["M", "L", "XL", "XXL"],
+    "image": "/sports/trackpants/adidas-tiro21-men.jpg"
+  },
+  {
+    "id": 25,
+    "name": "Puma Women's Active Joggers",
+    "category": "trackpants",
+    "gender": "women",
+    "price": 2299,
+    "colors": ["Pink", "Black", "Grey"],
+    "sizes": ["XS", "S", "M", "L", "XL"],
+    "image": "/sports/trackpants/puma-active-joggers-women.jpg"
+  },
+  {
+    "id": 26,
+    "name": "Under Armour Women's Rival Pants",
+    "category": "trackpants",
+    "gender": "women",
+    "price": 2699,
+    "colors": ["Black", "Grey", "Purple"],
+    "sizes": ["S", "M", "L", "XL"],
+    "image": "/sports/trackpants/ua-rival-women.jpg"
+  },
+  {
+    "id": 27,
+    "name": "Nike Sportswear Club Fleece Pants",
+    "category": "trackpants",
+    "gender": "kids",
+    "price": 1799,
+    "colors": ["Grey", "Black", "Blue"],
+    "sizes": ["6-7Y", "8-9Y", "10-11Y", "12-13Y"],
+    "image": "/sports/trackpants/nike-club-fleece-kids.jpg"
+  },
+  {
+    "id": 28,
+    "name": "Wilson Pro Staff Tennis Racket",
+    "category": "equipment",
+    "gender": "unisex",
+    "price": 4999,
+    "colors": ["Black", "Red"],
+    "sizes": ["Standard"],
+    "image": "/sports/equipment/wilson-prostaff-tennis.jpg"
+  },
+  {
+    "id": 29,
+    "name": "Spalding NBA Official Basketball",
+    "category": "equipment",
+    "gender": "unisex",
+    "price": 1999,
+    "colors": ["Orange"],
+    "sizes": ["Size 7", "Size 6", "Size 5"],
+    "image": "/sports/equipment/spalding-nba-basketball.jpg"
+  },
+  {
+    "id": 30,
+    "name": "Nike Premier League Football",
+    "category": "equipment",
+    "gender": "unisex",
+    "price": 1599,
+    "colors": ["White", "Yellow"],
+    "sizes": ["Size 5", "Size 4", "Size 3"],
+    "image": "/sports/equipment/nike-premier-football.jpg"
+  },
+  {
+    "id": 31,
+    "name": "Head Radical Tennis Racket",
+    "category": "equipment",
+    "gender": "unisex",
+    "price": 5999,
+    "colors": ["Orange", "Black"],
+    "sizes": ["Standard"],
+    "image": "/sports/equipment/head-radical-tennis.jpg"
+  },
+  {
+    "id": 32,
+    "name": "Yonex Badminton Racket",
+    "category": "equipment",
+    "gender": "unisex",
+    "price": 3499,
+    "colors": ["Blue", "Red", "Black"],
+    "sizes": ["Standard"],
+    "image": "/sports/equipment/yonex-badminton.jpg"
+  },
+  {
+    "id": 33,
+    "name": "Nike Gym Duffel Bag",
+    "category": "accessories",
+    "gender": "unisex",
+    "price": 2299,
+    "colors": ["Black", "Grey", "Navy"],
+    "sizes": ["Medium", "Large"],
+    "image": "/sports/accessories/nike-gym-duffel.jpg"
+  },
+  {
+    "id": 34,
+    "name": "Adidas 3-Stripes Backpack",
+    "category": "accessories",
+    "gender": "unisex",
+    "price": 1999,
+    "colors": ["Black", "Navy", "Grey"],
+    "sizes": ["Standard"],
+    "image": "/sports/accessories/adidas-3stripes-backpack.jpg"
+  },
+  {
+    "id": 35,
+    "name": "Under Armour Storm Scrimmage Backpack",
+    "category": "accessories",
+    "gender": "unisex",
+    "price": 2799,
+    "colors": ["Black", "Red", "Blue"],
+    "sizes": ["Standard"],
+    "image": "/sports/accessories/ua-storm-backpack.jpg"
+  },
+  {
+    "id": 36,
+    "name": "Nike Pro Combat Compression Shorts",
+    "category": "compression",
+    "gender": "men",
+    "price": 1799,
+    "colors": ["Black", "Navy", "Grey"],
+    "sizes": ["S", "M", "L", "XL"],
+    "image": "/sports/compression/nike-pro-combat-men.jpg"
+  },
+  {
+    "id": 37,
+    "name": "Under Armour HeatGear Leggings",
+    "category": "compression",
+    "gender": "women",
+    "price": 2199,
+    "colors": ["Black", "Pink", "Grey"],
+    "sizes": ["XS", "S", "M", "L", "XL"],
+    "image": "/sports/compression/ua-heatgear-leggings-women.jpg"
+  },
+  {
+    "id": 38,
+    "name": "Adidas Alphaskin Compression Tights",
+    "category": "compression",
+    "gender": "men",
+    "price": 2499,
+    "colors": ["Black", "Blue"],
+    "sizes": ["M", "L", "XL"],
+    "image": "/sports/compression/adidas-alphaskin-men.jpg"
+  },
+  {
+    "id": 39,
+    "name": "Nike Pro Sports Bra",
+    "category": "sportsbra",
+    "gender": "women",
+    "price": 1999,
+    "colors": ["Black", "White", "Pink"],
+    "sizes": ["XS", "S", "M", "L", "XL"],
+    "image": "/sports/sportsbra/nike-pro-sportsbra.jpg"
+  },
+  {
+    "id": 40,
+    "name": "Adidas Medium Support Sports Bra",
+    "category": "sportsbra",
+    "gender": "women",
+    "price": 1799,
+    "colors": ["Grey", "Black", "Purple"],
+    "sizes": ["S", "M", "L", "XL"],
+    "image": "/sports/sportsbra/adidas-medium-support.jpg"
+  },
+  {
+    "id": 41,
+    "name": "Under Armour Infinity High Sports Bra",
+    "category": "sportsbra",
+    "gender": "women",
+    "price": 2299,
+    "colors": ["Black", "Pink", "White"],
+    "sizes": ["XS", "S", "M", "L"],
+    "image": "/sports/sportsbra/ua-infinity-high.jpg"
+  },
+  {
+    "id": 42,
+    "name": "Nike Basketball Jersey",
+    "category": "jersey",
+    "gender": "men",
+    "price": 2999,
+    "colors": ["Red", "Blue", "White"],
+    "sizes": ["S", "M", "L", "XL", "XXL"],
+    "image": "/sports/jersey/nike-basketball-men.jpg"
+  },
+  {
+    "id": 43,
+    "name": "Adidas Football Jersey",
+    "category": "jersey",
+    "gender": "men",
+    "price": 3299,
+    "colors": ["Blue", "Red", "White"],
+    "sizes": ["S", "M", "L", "XL"],
+    "image": "/sports/jersey/adidas-football-men.jpg"
+  },
+  {
+    "id": 44,
+    "name": "Puma Kids Football Kit",
+    "category": "jersey",
+    "gender": "kids",
+    "price": 2499,
+    "colors": ["Blue", "Red", "Green"],
+    "sizes": ["6-7Y", "8-9Y", "10-11Y", "12-13Y"],
+    "image": "/sports/jersey/puma-football-kit-kids.jpg"
+  },
+  {
+    "id": 45,
+    "name": "Nike Running Cap",
+    "category": "accessories",
+    "gender": "unisex",
+    "price": 999,
+    "colors": ["Black", "White", "Red"],
+    "sizes": ["Adjustable"],
+    "image": "/sports/accessories/nike-running-cap.jpg"
+  },
+  {
+    "id": 46,
+    "name": "Adidas Training Gloves",
+    "category": "accessories",
+    "gender": "unisex",
+    "price": 1299,
+    "colors": ["Black", "Grey"],
+    "sizes": ["S", "M", "L", "XL"],
+    "image": "/sports/accessories/adidas-training-gloves.jpg"
+  },
+  {
+    "id": 47,
+    "name": "Nike Swim Goggles",
+    "category": "accessories",
+    "gender": "unisex",
+    "price": 899,
+    "colors": ["Blue", "Clear", "Black"],
+    "sizes": ["Standard"],
+    "image": "/sports/accessories/nike-swim-goggles.jpg"
+  },
+  {
+    "id": 48,
+    "name": "Under Armour Water Bottle",
+    "category": "accessories",
+    "gender": "unisex",
+    "price": 799,
+    "colors": ["Black", "Blue", "Red"],
+    "sizes": ["500ml", "750ml", "1L"],
+    "image": "/sports/accessories/ua-water-bottle.jpg"
+  },
+  {
+    "id": 49,
+    "name": "Nike Elite Basketball Socks",
+    "category": "accessories",
+    "gender": "unisex",
+    "price": 699,
+    "colors": ["White", "Black", "Red"],
+    "sizes": ["S", "M", "L", "XL"],
+    "image": "/sports/accessories/nike-elite-socks.jpg"
+  },
+  {
+    "id": 50,
+    "name": "Adidas Yoga Mat",
+    "category": "equipment",
+    "gender": "unisex",
+    "price": 1599,
+    "colors": ["Purple", "Blue", "Black"],
+    "sizes": ["Standard"],
+    "image": "/sports/equipment/adidas-yoga-mat.jpg"
   }
 ]

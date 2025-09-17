@@ -11,7 +11,21 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 
-const Page = () => {
+// -------- Color Map -------- //
+const colorOptions = [
+  { color: "Black", code: "#000000" },
+  { color: "White", code: "#FFFFFF" },
+  { color: "Grey", code: "#808080" },
+  { color: "Blue", code: "#0000FF" },
+  { color: "Red", code: "#FF0000" },
+  { color: "Green", code: "#008000" },
+  { color: "Yellow", code: "#FFFF00" },
+  { color: "Orange", code: "#FFA500" },
+]
+
+const Page = ({ params }) => {
+  const { gender, category } = params; // ✅ Now params works
+
   // fetch function
   const getPage = async () => {
     const response = await api.get()
@@ -31,28 +45,10 @@ const Page = () => {
   })
 
   // Prices
-  const prices = [
-    "₹0-2000",
-    "₹2000-5000",
-    "₹5000 and above",
-  ]
+  const prices = ["₹0-2000", "₹2000-5000", "₹5000 and above"]
 
   // Sizes
-  const sizes = [
-    "S", "M", "L", "XL", "XXL"
-  ]
-
-  // Colors
-  const colors = [
-    { color: "Black", code: "#000000" },
-    { color: "White", code: "#FFFFFF" },
-    { color: "Grey", code: "#808080" },
-    { color: "Blue", code: "#0000FF" },
-    { color: "Red", code: "#FF0000" },
-    { color: "Green", code: "#008000" },
-    { color: "Yellow", code: "#FFFF00" },
-    { color: "Orange", code: "#FFA500" },
-  ]
+  const sizes = ["S", "M", "L", "XL", "XXL"]
 
   // Handle price select (single)
   const handlePriceSelect = (price) => {
@@ -86,6 +82,12 @@ const Page = () => {
   const filteredProducts = data?.filter(product => {
     let isValid = true
 
+    // Filter by gender + category from params
+    isValid =
+      isValid &&
+      product.gender?.toLowerCase() === gender &&
+      product.category?.toLowerCase() === category
+
     // Price filter
     if (selectedFilters.price) {
       if (selectedFilters.price === "₹0-2000") {
@@ -114,13 +116,14 @@ const Page = () => {
     return isValid
   })
 
-   if (isLoading) return <p>Loading...</p>
+  if (isLoading) return <p>Loading...</p>
   if (error) return <p>Error: {error.message}</p>
-
 
   return (
     <div>
-      <p className='text-3xl font-semibold p-5'>Men's Running Shoes</p>
+      <p className='text-3xl font-semibold p-5 capitalize'>
+        {gender}&apos;s {category}
+      </p>
 
       <div className='flex'>
         {/* Sidebar */}
@@ -170,8 +173,8 @@ const Page = () => {
             <AccordionItem value="color">
               <AccordionTrigger>Shop By Color</AccordionTrigger>
               <AccordionContent>
-                <div className="flex flex-wrap gap-2">
-                  {colors.map((c, i) => (
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {colorOptions.map((c, i) => (
                     <span
                       key={i}
                       onClick={() => handleColorToggle(c.color)}
@@ -203,17 +206,31 @@ const Page = () => {
                     src={product.image || '/shoe1.avif'}
                     alt={product.name}
                     fill
-                    className='object-cover'
+                    className='object-cover rounded-t-2xl'
                   />
                 </div>
 
                 <div className='w-full h-[40%] p-3 flex flex-col gap-2'>
                   <h1 className='text-xl font-semibold'>{product.name}</h1>
-                  <p className='text-gray-500 font-semibold'>{product.category}</p>
-                  <p
-                  className="w-8 h-2 font-semibold"
-                   style={{ backgroundColor: product.code }}
-                  ></p>
+                  <p className='text-gray-500 font-semibold'>
+                    {product.category}
+                  </p>
+
+                  {/* Show all product colors */}
+                  <div className="flex gap-2 mt-2">
+                    {product.colors?.map((c, i) => {
+                      const hex = colorOptions.find(col => col.color === c)?.code
+                      return (
+                        <div
+                          key={i}
+                          className="w-6 h-6 rounded-full border"
+                          style={{ backgroundColor: hex || "#ccc" }}
+                          title={c}
+                        />
+                      )
+                    })}
+                  </div>
+
                   <h1 className='font-semibold text-black'>
                     MRP: ₹{product.price}
                   </h1>
