@@ -16,7 +16,8 @@
     "env": "^0.0.2",
     "express": "^5.1.0",
     "mongoose": "^8.18.0",
-    "postgres": "^3.4.7"
+    "postgres": "^3.4.7",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "drizzle-kit": "^0.31.4"

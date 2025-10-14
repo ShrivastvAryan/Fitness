@@ -58,7 +58,6 @@ const Page = ({ params }) => {
     }))
   }
 
-  // Handle size toggle (multi)
   const handleSizeToggle = (size) => {
     setSelectedFilters(prev => ({
       ...prev,
@@ -68,7 +67,7 @@ const Page = ({ params }) => {
     }))
   }
 
-  // Handle color toggle (multi)
+
   const handleColorToggle = (color) => {
     setSelectedFilters(prev => ({
       ...prev,
@@ -78,17 +77,15 @@ const Page = ({ params }) => {
     }))
   }
 
-  // ------------------ Filtering Logic ------------------ //
   const filteredProducts = data?.filter(product => {
     let isValid = true
 
-    // Filter by gender + category from params
     isValid =
       isValid &&
       product.gender?.toLowerCase() === gender &&
       product.category?.toLowerCase() === category
 
-    // Price filter
+  
     if (selectedFilters.price) {
       if (selectedFilters.price === "₹0-2000") {
         isValid = isValid && product.price <= 2000
