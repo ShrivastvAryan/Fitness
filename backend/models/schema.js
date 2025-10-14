@@ -1,9 +1,11 @@
 const { pgTable, serial, text, integer, timestamp, boolean } = require("drizzle-orm/pg-core");
 
-const products = pgTable("products", {
+const product = pgTable("product", {
   id: serial("id").primaryKey(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
   product_name: text("product_name").notNull(),
+  gender:text('gender').notNull(),
+  category:text('category').notNull(),
   size: text("size").array().notNull(),
   color: text("color").array().notNull(),
   offer_price: integer("offer_price"),
@@ -12,4 +14,4 @@ const products = pgTable("products", {
   isAvailable: boolean("isAvailable").default(true),
 });
 
-module.exports = { products };
+module.exports = { product };

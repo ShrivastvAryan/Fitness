@@ -2,6 +2,8 @@ const z = require('zod');
 
 const createProductSchema = z.object({
     product_name: z.string().min(1),
+    gender:z.string(),
+    category:z.string(),
     size: z.array(z.string()),
     color: z.array(z.string()),
     offer_price: z.number().int().nonnegative().optional(),
