@@ -1,16 +1,16 @@
-const { pgTable, serial, text, integer, timestamp, boolean } = require("drizzle-orm/pg-core");
+const { pgTable, serial, text, integer, timestamp } = require("drizzle-orm/pg-core");
 
 const User=pgTable('user',{
     id:serial('id').primaryKey(),
     created_at:timestamp("created_at", { withTimezone: true }).defaultNow(),
-    name:text('name').notNull(),
+    userName:text('userName').notNull(),
     email:text('email').notNull(),
     phone:integer('phone').notNull(),
-    address:text('address'),
-    state:text('state'),
-    city:text('city'),
-    pincode:integer('pincode'),
-    location:text('location')
+    address:text('address').notNull(),
+    state:text('state').notNull(),
+    city:text('city').notNull(),
+    pincode:integer('pincode').notNull(),
+    location:text('location').notNull()
 })
 
 module.exports=User
