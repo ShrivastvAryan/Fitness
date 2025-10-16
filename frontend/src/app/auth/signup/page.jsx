@@ -1,158 +1,258 @@
 "use client";
-import React, { useState,useEffect } from "react";
+import React, { useState } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
+
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
-} from "@/components/ui/input-otp"
+} from "@/components/ui/input-otp";
+
+import useAuthStore from "@/useAuth";
 
 const SignupPage = () => {
-  // step tracker
   const [step, setStep] = useState(1);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
 
-  // form data
+  const setAuth = useAuthStore((state) => state.setAuth);
+
   const [formData, setFormData] = useState({
     userName: "",
     email: "",
     phone: "",
-    address:"",
-    state:"",
-    pincode:"",
-    location:""
+    address: "",
+    state: "",
+    pincode: "",
+    location: "",
   });
 
-  // errors
-  const [errors, setErrors] = useState({});
-  const[state,setState]=useState([]);
-  const[locality,setLocality]=useState([])
+  const [otp, setOtp] = useState({
+    0: "",
+    1: "",
+    2: "",
+    3: "",
+    4: "",
+    5: "",
+  });
 
-  const fetchState=async()=>{
-    try {
-       const res = await axios.get("http://localhost:3000/api/state", {
-      headers: {
-        Country: "India",
-      },
-    });
-       setState(res.data.data.states);
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  // --- Fetch States ---
+  const { data: states = [], isLoading: stateLoading } = useQuery({
+    queryKey: ["states"],
+    queryFn: async () => {
+      const res = await axios.get("http://localhost:3000/api/state", {
+        headers: { Country: "India" },
+      });
+      return res.data.data.states;
+    },
+  });
 
- const fetchLocality = async () => {
-  const { pincode } = formData;
+  // --- Fetch Localities ---
+  const { data: localities = [], isLoading: localityLoading } = useQuery({
+    queryKey: ["localities", formData.pincode],
+    queryFn: async () => {
+      if (!formData.pincode) return [];
+      const res = await axios.get(
+        `http://localhost:3000/api/pincode/${formData.pincode}`
+      );
+      const postOffices = res.data?.[0]?.PostOffice || [];
+      return postOffices.map((po) => po.Name);
+    },
+    enabled: !!formData.pincode,
+  });
 
-  try {
-    const res = await axios.get(`http://localhost:3000/api/pincode/${pincode}`);
-    // extract PostOffice array
-    const postOffices = res.data?.[0]?.PostOffice || [];
-    setLocality(postOffices);
-  } catch (error) {
-    console.error(error);
-  }
-};
+  // --- Handle OTP Change ---
+  const handleOtpChange = (value, index) => {
+    setOtp((prev) => ({
+      ...prev,
+      [index]: value,
+    }));
+  };
 
-  useEffect(()=>{
-    fetchState();
-    fetchLocality();
-  },[])
+  const submitDetailsMutation = useMutation({
+    mutationFn: async (data) => {
+      const res = await axios.post(
+        "http://localhost:5000/api/signup",
+        data
+      );
+      return res.data;
+    },
+    onSuccess: (data) => {
+      console.log("OTP sent successfully:", data);
+      setSuccessMsg("OTP sent to your email. Check your inbox.");
+      setErrorMsg("");
+      setTimeout(() => setSuccessMsg(""), 3000);
+      setStep(2);
+    },
+    onError: (error) => {
+      console.error("Error sending OTP:", error);
+      setErrorMsg(
+        error.response?.data?.message || "Failed to send OTP. Please try again."
+      );
+    },
+  });
 
-  // handle input
+  // --- OTP Verification Mutation ---
+  const otpMutation = useMutation({
+    mutationFn: async () => {
+      const otpString = Object.values(otp).join("");
+
+      if (otpString.length !== 6) {
+        throw new Error("OTP must be 6 digits");
+      }
+
+      const res = await axios.post(
+        "http://localhost:5000/api/verify-signup",
+        {
+          email: formData.email,
+          userName:formData.userName,
+          address:formData.address,
+          state:formData.state,
+          pincode:formData.pincode,
+          location:formData.location,
+          phone:formData.phone,
+          otp: otpString,
+        }
+      );
+      return res.data;
+    },
+    onSuccess: (data) => {
+      console.log("OTP verification successful:", data);
+      setErrorMsg("");
+
+      if (data.token && data.user) {
+        setAuth({
+          userName: data.user.userName,
+          token: data.token,
+        });
+      }
+
+      setSuccessMsg("Account created successfully!");
+      setTimeout(() => {
+        setStep(1);
+        setFormData({
+          userName: "",
+          email: "",
+          phone: "",
+          address: "",
+          state: "",
+          pincode: "",
+          location: "",
+        });
+        setOtp({ 0: "", 1: "", 2: "", 3: "", 4: "", 5: "" });
+      }, 2000);
+    },
+    onError: (error) => {
+      console.error("OTP verification error:", error);
+      setErrorMsg(
+        error.response?.data?.message || "OTP verification failed. Please try again."
+      );
+    },
+  });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    setErrorMsg("");
   };
 
-  // basic validation per step
-//   const validateStep = () => {
-//     const newErrors = {};
-//     if (step === 1) {
-//       if (!formData.name.trim()) newErrors.name = "Name is required";
-//       if (!formData.username.trim()) newErrors.username = "Username is required";
-//     } else if (step === 2) {
-//       if (!formData.email.trim()) newErrors.email = "Email is required";
-//       else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
-//         newErrors.email = "Invalid email";
-//       if (!formData.phone.trim()) newErrors.phone = "Phone number is required";
-//       else if (formData.phone.length < 10)
-//         newErrors.phone = "Phone number is too short";
-//     } else if (step === 3) {
-//       if (!formData.password) newErrors.password = "Password is required";
-//       else if (formData.password.length < 6)
-//         newErrors.password = "Must be at least 6 characters";
-//       if (formData.password !== formData.confirmPassword)
-//         newErrors.confirmPassword = "Passwords do not match";
-//     }
-//     setErrors(newErrors);
-//     return Object.keys(newErrors).length === 0;
-//   };
-
-  // next / previous
-  const nextStep = () => {
-     setStep((prev) => prev + 1);
-  };
-  const prevStep = () => setStep((prev) => prev - 1);
-
-  // submit
-  const handleSubmit = (e) => {
+  // --- Handle Step 1 Submission ---
+  const handleStep1Submit = (e) => {
     e.preventDefault();
-    if (validateStep()) {
-      console.log("Signup Data:", formData);
-      alert("Signup Successful ✅");
+    setErrorMsg("");
+
+    if (
+      !formData.userName ||
+      !formData.email ||
+      !formData.phone ||
+      !formData.address ||
+      !formData.state ||
+      !formData.pincode ||
+      !formData.location
+    ) {
+      setErrorMsg("Please fill in all fields");
+      return;
     }
+
+    submitDetailsMutation.mutate(formData);
+  };
+
+  // --- Handle OTP Submission ---
+  const handleOtpSubmit = (e) => {
+    e.preventDefault();
+    setErrorMsg("");
+    otpMutation.mutate();
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 px-4">
-      <div className="bg-white w-full max-w-md rounded-2xl shadow-lg p-8">
+    <div className="flex justify-center mt-5 bg-gray-100 px-4">
+      <div className="bg-white w-full md:w-1/2 rounded-2xl shadow-lg p-8">
         <h2 className="text-3xl font-bold text-center mb-6">
-          Create an Account
+          {step === 1 ? "Create an Account" : "Verify Your Account"}
         </h2>
 
         {/* Step Dots */}
         <div className="flex justify-center gap-2 mb-6">
-          {[1, 2, 3].map((num) => (
+          {[1, 2].map((num) => (
             <div
               key={num}
-              className={`h-3 w-3 rounded-full ${
+              className={`h-3 w-3 rounded-full transition-colors ${
                 step >= num ? "bg-black" : "bg-gray-300"
               }`}
             />
           ))}
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* STEP 1 - BASIC INFO */}
+        {/* Error Message */}
+        {errorMsg && (
+          <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg text-sm">
+            {errorMsg}
+          </div>
+        )}
+
+        {/* Success Message */}
+        {successMsg && (
+          <div className="mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded-lg text-sm">
+            {successMsg}
+          </div>
+        )}
+
+        <form className="space-y-6">
+          {/* STEP 1 - ALL DETAILS */}
           {step === 1 && (
             <>
-              <div>
-                <label className="block text-sm font-medium">Full Name</label>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="w-full">
+                <label className="block text-sm font-medium ">Full Name</label>
                 <input
                   type="text"
                   name="userName"
                   value={formData.userName}
                   onChange={handleChange}
                   placeholder="Enter your full name"
-                  className="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-2 focus:ring-black"
+                  className="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-2 focus:ring-black outline-none"
+                  required
                 />
-                
               </div>
 
               <div>
-                <label className="block text-sm font-medium">Email</label>
+                <label className="block text-sm font-medium ">Email</label>
                 <input
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="Enter your Email"
-                  className="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-2 focus:ring-black"
+                  className="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-2 focus:ring-black outline-none"
+                  required
                 />
-                
+              </div>
               </div>
 
+
+             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium">Phone</label>
                 <input
@@ -161,26 +261,11 @@ const SignupPage = () => {
                   value={formData.phone}
                   onChange={handleChange}
                   placeholder="+91XXXXXXXXXX"
-                  className="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-2 focus:ring-black"
+                  className="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-2 focus:ring-black outline-none"
+                  required
                 />
-                
               </div>
 
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  onClick={nextStep}
-                  className="bg-black text-white px-5 py-2 rounded-lg hover:bg-gray-800"
-                >
-                  Next →
-                </button>
-              </div>
-            </>
-          )}
-
-          {/* STEP 2 - CONTACT INFO */}
-          {step === 3 && (
-            <>
               <div>
                 <label className="block text-sm font-medium">Address</label>
                 <input
@@ -189,113 +274,156 @@ const SignupPage = () => {
                   value={formData.address}
                   onChange={handleChange}
                   placeholder="Enter your address"
-                  className="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-2 focus:ring-black"
+                  className="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-2 focus:ring-black outline-none"
+                  required
                 />
               </div>
-
+              </div>
+ 
+             
               <div>
-  <label className="block text-sm font-medium">State</label>
-  <select
-    name="state"
-    value={formData.state}
-    onChange={handleChange}
-    className="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-2 focus:ring-black"
-  >
-    <option value="">Select a state</option>
-    {state?.map((s, index) => (
-      <option key={index}>
-        {s.name}
-      </option>
-    ))}
-  </select>
-</div>
+                <label className="block text-sm font-medium">State</label>
+                <select
+                  name="state"
+                  value={formData.state}
+                  onChange={handleChange}
+                  className="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-2 focus:ring-black outline-none"
+                  required
+                >
+                  <option value="">Select a state</option>
+                  {stateLoading ? (
+                    <option disabled>Loading states...</option>
+                  ) : (
+                    states.map((s, idx) => (
+                      <option key={idx} value={s.name}>
+                        {s.name}
+                      </option>
+                    ))
+                  )}
+                </select>
+              </div>
 
+              <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium">pincode</label>
+                <label className="block text-sm font-medium">Pincode</label>
                 <input
-                 type="text"
+                  type="text"
                   name="pincode"
                   value={formData.pincode}
                   onChange={handleChange}
-                  placeholder="pincode"
-                  className="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-2 focus:ring-black"/>
+                  placeholder="Enter Pincode"
+                  className="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-2 focus:ring-black outline-none"
+                  required
+                />
               </div>
 
               <div>
                 <label className="block text-sm font-medium">Location</label>
                 <select
-                  type="text"
                   name="location"
                   value={formData.location}
                   onChange={handleChange}
-                  placeholder="State"
-                  className="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-2 focus:ring-black"
+                  className="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-2 focus:ring-black outline-none"
+                  required
                 >
-                   
-  <option value="">Select Locality</option>
-  {locality.map((s, index) => (
-    <option key={index} value={s.Name}>
-      {s.Name}
-    </option>
-  ))}
-
-
+                  <option value="">Select Locality</option>
+                  {localityLoading ? (
+                    <option disabled>Loading localities...</option>
+                  ) : (
+                    localities.map((name, idx) => (
+                      <option key={idx} value={name}>
+                        {name}
+                      </option>
+                    ))
+                  )}
                 </select>
-               
+              </div>
               </div>
 
-              <div className="flex justify-between">
-                <button
-                  type="button"
-                  onClick={prevStep}
-                  className="px-5 py-2 rounded-lg border border-gray-400 hover:bg-gray-100"
-                >
-                  ← Back
-                </button>
+              <div className="flex justify-end gap-3">
                 <button
                   type="submit"
-                  
-                  className="bg-black text-white px-5 py-2 rounded-lg hover:bg-gray-800"
+                  onClick={handleStep1Submit}
+                  disabled={submitDetailsMutation.isPending}
+                  className="bg-black text-white px-5 py-2 rounded-lg hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed transition"
                 >
-                  Create Account
+                  {submitDetailsMutation.isPending ? "Sending OTP..." : "Continue →"}
                 </button>
               </div>
             </>
           )}
 
-          {/* STEP 3 - PASSWORD SETUP */}
+          {/* STEP 2 - OTP VERIFICATION */}
           {step === 2 && (
             <>
-            <div className="flex justify-center p-10">
-             <InputOTP maxLength={6}>
-  <InputOTPGroup>
-    <InputOTPSlot index={0} />
-    <InputOTPSlot index={1} />
-    <InputOTPSlot index={2} />
-  </InputOTPGroup>
-  <InputOTPSeparator />
-  <InputOTPGroup>
-    <InputOTPSlot index={3} />
-    <InputOTPSlot index={4} />
-    <InputOTPSlot index={5} />
-  </InputOTPGroup>
-</InputOTP>
-</div>
+              <div className="text-center mb-4">
+                <p className="text-sm text-gray-600">
+                  Enter the 6-digit OTP sent to <strong>{formData.email}</strong>
+                </p>
+              </div>
 
-              <div className="flex justify-between">
+              <div className="flex justify-center py-8">
+                <InputOTP maxLength={6}>
+                  <InputOTPGroup>
+                    <InputOTPSlot
+                      index={0}
+                      value={otp[0]}
+                      onChange={(value) => handleOtpChange(value, 0)}
+                    />
+                    <InputOTPSlot
+                      index={1}
+                      value={otp[1]}
+                      onChange={(value) => handleOtpChange(value, 1)}
+                    />
+                    <InputOTPSlot
+                      index={2}
+                      value={otp[2]}
+                      onChange={(value) => handleOtpChange(value, 2)}
+                    />
+                  </InputOTPGroup>
+                  <InputOTPSeparator />
+                  <InputOTPGroup>
+                    <InputOTPSlot
+                      index={3}
+                      value={otp[3]}
+                      onChange={(value) => handleOtpChange(value, 3)}
+                    />
+                    <InputOTPSlot
+                      index={4}
+                      value={otp[4]}
+                      onChange={(value) => handleOtpChange(value, 4)}
+                    />
+                    <InputOTPSlot
+                      index={5}
+                      value={otp[5]}
+                      onChange={(value) => handleOtpChange(value, 5)}
+                    />
+                  </InputOTPGroup>
+                </InputOTP>
+              </div>
+
+              <div className="flex justify-between gap-3">
                 <button
                   type="button"
-                  onClick={prevStep}
-                  className="px-5 py-2 rounded-lg border border-gray-400 hover:bg-gray-100"
+                  onClick={() => {
+                    setStep(1);
+                    setErrorMsg("");
+                    setOtp({ 0: "", 1: "", 2: "", 3: "", 4: "", 5: "" });
+                  }}
+                  disabled={otpMutation.isPending}
+                  className="px-5 py-2 rounded-lg border border-gray-400 hover:bg-gray-100 disabled:bg-gray-200 disabled:cursor-not-allowed transition"
                 >
                   ← Back
                 </button>
                 <button
                   type="button"
-                  onClick={nextStep}
-                  className="bg-black text-white px-5 py-2 rounded-lg hover:bg-gray-800"
+                  onClick={handleOtpSubmit}
+                  disabled={
+                    otpMutation.isPending || Object.values(otp).some((v) => v === "")
+                  }
+                  className="bg-black text-white px-5 py-2 rounded-lg hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed transition"
                 >
-                  Next
+                  {otpMutation.isPending ? "Verifying..." : "Verify & Create"}
                 </button>
               </div>
             </>
