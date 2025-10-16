@@ -60,7 +60,6 @@ const verifySignupOtp = async (req, res) => {
       phone,
       address,
       state,
-      city,
       location,
       pincode
     }).returning();

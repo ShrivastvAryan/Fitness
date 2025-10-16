@@ -3,7 +3,7 @@ import React from 'react'
 const Footer = () => {
   return (
     <>
-  <span className="block h-0.5 w-[90vw] bg-gray-300 mx-auto mt-10"></span>
+  <span className="block h-0.5 w-full bg-gray-300 mx-auto mt-10"></span>
    <footer className=" mt-10 pb-10">
       <div className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-3 gap-8 text-sm text-gray-600">
         

@@ -1,7 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "./Ui/Navbar";
-import Footer from "./Ui/Footer";
+import Navbar from "@/Ui/Navbar";
+import Footer from "@/Ui/Footer";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Providers from "./provider";
 
@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-       className="bg-gray-100 overflow-x-hidden"
+       className="bg-gray-100 overflow-x-hidden max-w-[1600px] mx-auto"
       >
         <Providers>
         <Navbar/>

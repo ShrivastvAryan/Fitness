@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import { useQuery } from '@tanstack/react-query'
-import api from '@/app/api/api'
+
 
 import {
   Accordion,

@@ -8,7 +8,6 @@ const User=pgTable('user',{
     phone:integer('phone').notNull(),
     address:text('address').notNull(),
     state:text('state').notNull(),
-    city:text('city').notNull(),
     pincode:integer('pincode').notNull(),
     location:text('location').notNull()
 })
