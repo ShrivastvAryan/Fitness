@@ -1,5 +1,5 @@
 "use client"
-import React, { use, useState ,useEffect} from "react"
+import React, { useState, useEffect } from "react"
 import { Heart, ShoppingBag, Search, Menu, X } from "lucide-react"
 import {
   NavigationMenu,
@@ -13,29 +13,25 @@ import Link from "next/link"
 import useAuthStore from "@/useAuth"
 
 const Navbar = () => {
+  const { clearAuth,userName } = useAuthStore()
 
-  const{clearAuth}=useAuthStore();
-
-   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-
-   const [isLoggedOut, setIsLoggedOut] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [isLoggedOut, setIsLoggedOut] = useState(false)
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    if(!token){
-      setIsLoggedOut(true)
-    }
-    else{
-      setIsLoggedOut(false)
-    }
-  }, []);
+    const token = localStorage.getItem("token")
+    setIsLoggedOut(!token)
+  }, [])
 
   const handleLogOut = () => {
-    clearAuth();
-    setIsLoggedOut(true);
-  };
+    clearAuth()
+    setIsLoggedOut(true)
+  }
 
+  const navLinks = [
+    { label: "Join Us", href: "/join" },
+    { label: "Help", href: "/help" },
+  ]
 
   const NavList = [
     {
@@ -50,37 +46,51 @@ const Navbar = () => {
       name: "Men",
       subcategories: [
         { cat: "Tshirts", link: "/men/tshirt" },
-        { cat: "Shoes", link: "/" },
-        { cat: "Accessories", link: "/" },
+        { cat: "Shoes", link: "/men/shoes" },
+        { cat: "Accessories", link: "/men/accessories" },
       ],
     },
     {
       name: "Women",
       subcategories: [
-        { cat: "Tshirts", link: "/" },
-        { cat: "Shoes", link: "/" },
-        { cat: "Accessories", link: "/" },
+        { cat: "Tshirts", link: "/women/tshirt" },
+        { cat: "Shoes", link: "/women/shoes" },
+        { cat: "Accessories", link: "/women/accessories" },
       ],
     },
     {
       name: "Kids",
       subcategories: [
-        { cat: "Tshirts", link: "/" },
-        { cat: "Shoes", link: "/" },
-        { cat: "Accessories", link: "/" },
+        { cat: "Tshirts", link: "/kids/tshirt" },
+        { cat: "Shoes", link: "/kids/shoes" },
+        { cat: "Accessories", link: "/kids/accessories" },
       ],
     },
   ]
 
   return (
     <>
-      {/* Top Navbar (Small links) */}
-      <div className="hidden md:flex w-full justify-end py-3 px-6 font-semibold text-sm gap-4">
-        <p className="cursor-pointer hover:underline">Join Us</p>
-        <p className="cursor-pointer hover:underline">Login</p>
-        <p className="cursor-pointer hover:underline">Help</p>
-        <p className="cursor-pointer hover:underline hover:text-red-700" onClick={handleLogOut}>Logout</p>
-        <p>{isLoggedOut}</p>
+      {/* Top Navbar (small links) */}
+      <div className="hidden md:flex w-full justify-between py-3 px-6 font-semibold text-sm gap-4">
+        <div>Hi There {userName}</div>
+        <div className="flex gap-4">
+        {navLinks.map((link, index) => (
+          <div
+            key={index}
+            onClick={link.onClick}
+            className={`cursor-pointer hover:underline ${link.className || ""}`}
+          >
+            {link.href !== "#" ? (
+              <Link href={link.href}>{link.label}</Link>
+            ) : (
+              link.label
+            )}
+          </div>
+          
+        ))}
+        
+        <p>{isLoggedOut ? "Login" : "Logout"}</p>
+        </div>
       </div>
 
       {/* Main Navbar */}
@@ -133,23 +143,17 @@ const Navbar = () => {
           <ShoppingBag className="cursor-pointer hover:text-gray-700" />
         </div>
 
-        {/* Mobile: Menu Icon */}
+        {/* Mobile Menu Icon */}
         <div className="md:hidden flex items-center">
           {mobileMenuOpen ? (
-            <X
-              className="w-6 h-6 cursor-pointer"
-              onClick={() => setMobileMenuOpen(false)}
-            />
+            <X className="w-6 h-6 cursor-pointer" onClick={() => setMobileMenuOpen(false)} />
           ) : (
-            <Menu
-              className="w-6 h-6 cursor-pointer"
-              onClick={() => setMobileMenuOpen(true)}
-            />
+            <Menu className="w-6 h-6 cursor-pointer" onClick={() => setMobileMenuOpen(true)} />
           )}
         </div>
       </nav>
 
-      {/* Mobile Menu Dropdown */}
+      {/* Mobile Dropdown */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-gray-100 px-6 py-4 space-y-4">
           {NavList.map((item, index) => (

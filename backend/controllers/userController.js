@@ -123,15 +123,22 @@ const verifyLoginOtp = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const jwtToken = generateToken({ id: user[0].id, email: user[0].email });
+    const foundUser = user[0];
+
+   const jwtToken = generateToken({
+      id: foundUser.id,
+      email: foundUser.email,
+    });
 
     delete otpStore[email]; // remove OTP
 
     return res.status(200).json({
       message: "Login successful",
-      user: user[0],
+      mail:foundUser.email,
+      userName:foundUser.userName,
       token: jwtToken,
     });
+    
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "OTP verification failed", error: error.message });
