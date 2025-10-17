@@ -5,17 +5,10 @@ const userSchema = z.object({
   created_at: z.string().datetime().optional(), // handled by DB
   userName: z.string().min(1, "Name is required"), // matches DB column userName
   email: z.string().email("Invalid email format"),
-  phone: z
-    .number()
-    .int()
-    .refine((val) => val.toString().length === 10, "Phone number must be 10 digits"),
+  phone: z.string().max(10),
   address: z.string().min(1, "Address is required"),
   state: z.string().min(1, "State is required"),
-  city: z.string().min(1, "City is required"),
-  pincode: z
-    .number()
-    .int()
-    .refine((val) => val.toString().length === 6, "Pincode must be 6 digits"),
+  pincode: z.string().max(6),
   location: z.string().min(1, "Location is required"),
 });
 

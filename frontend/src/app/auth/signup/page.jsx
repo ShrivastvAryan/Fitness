@@ -3,13 +3,6 @@ import React, { useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSeparator,
-  InputOTPSlot,
-} from "@/components/ui/input-otp";
-
 import useAuthStore from "@/useAuth";
 
 const SignupPage = () => {
@@ -29,14 +22,7 @@ const SignupPage = () => {
     location: "",
   });
 
-  const [otp, setOtp] = useState({
-    0: "",
-    1: "",
-    2: "",
-    3: "",
-    4: "",
-    5: "",
-  });
+  const [otp, setOtp] = useState('');
 
   // --- Fetch States ---
   const { data: states = [], isLoading: stateLoading } = useQuery({
@@ -64,12 +50,13 @@ const SignupPage = () => {
   });
 
   // --- Handle OTP Change ---
-  const handleOtpChange = (value, index) => {
-    setOtp((prev) => ({
-      ...prev,
-      [index]: value,
-    }));
-  };
+ const handleOtpChange = (e) => {
+  const value = e.target.value;
+
+  if (/^\d{0,6}$/.test(value)) {
+    setOtp(value);
+  }
+};
 
   const submitDetailsMutation = useMutation({
     mutationFn: async (data) => {
@@ -81,6 +68,7 @@ const SignupPage = () => {
     },
     onSuccess: (data) => {
       console.log("OTP sent successfully:", data);
+      console.log(formData)
       setSuccessMsg("OTP sent to your email. Check your inbox.");
       setErrorMsg("");
       setTimeout(() => setSuccessMsg(""), 3000);
@@ -97,10 +85,9 @@ const SignupPage = () => {
   // --- OTP Verification Mutation ---
   const otpMutation = useMutation({
     mutationFn: async () => {
-      const otpString = Object.values(otp).join("");
-
-      if (otpString.length !== 6) {
-        throw new Error("OTP must be 6 digits");
+      if(otp.length!==6){
+        console.log('OTP must be of 6 digit')
+        return
       }
 
       const res = await axios.post(
@@ -113,7 +100,7 @@ const SignupPage = () => {
           pincode:formData.pincode,
           location:formData.location,
           phone:formData.phone,
-          otp: otpString,
+          otp: otp,
         }
       );
       return res.data;
@@ -141,11 +128,12 @@ const SignupPage = () => {
           pincode: "",
           location: "",
         });
-        setOtp({ 0: "", 1: "", 2: "", 3: "", 4: "", 5: "" });
+        setOtp();
       }, 2000);
     },
     onError: (error) => {
       console.error("OTP verification error:", error);
+      console.log(otp)
       setErrorMsg(
         error.response?.data?.message || "OTP verification failed. Please try again."
       );
@@ -363,43 +351,7 @@ const SignupPage = () => {
               </div>
 
               <div className="flex justify-center py-8">
-                <InputOTP maxLength={6}>
-                  <InputOTPGroup>
-                    <InputOTPSlot
-                      index={0}
-                      value={otp[0]}
-                      onChange={(value) => handleOtpChange(value, 0)}
-                    />
-                    <InputOTPSlot
-                      index={1}
-                      value={otp[1]}
-                      onChange={(value) => handleOtpChange(value, 1)}
-                    />
-                    <InputOTPSlot
-                      index={2}
-                      value={otp[2]}
-                      onChange={(value) => handleOtpChange(value, 2)}
-                    />
-                  </InputOTPGroup>
-                  <InputOTPSeparator />
-                  <InputOTPGroup>
-                    <InputOTPSlot
-                      index={3}
-                      value={otp[3]}
-                      onChange={(value) => handleOtpChange(value, 3)}
-                    />
-                    <InputOTPSlot
-                      index={4}
-                      value={otp[4]}
-                      onChange={(value) => handleOtpChange(value, 4)}
-                    />
-                    <InputOTPSlot
-                      index={5}
-                      value={otp[5]}
-                      onChange={(value) => handleOtpChange(value, 5)}
-                    />
-                  </InputOTPGroup>
-                </InputOTP>
+               <input type='text' name="otp"  className="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-2 focus:ring-black outline-none" value={otp} onChange={handleOtpChange}/>
               </div>
 
               <div className="flex justify-between gap-3">
@@ -408,7 +360,7 @@ const SignupPage = () => {
                   onClick={() => {
                     setStep(1);
                     setErrorMsg("");
-                    setOtp({ 0: "", 1: "", 2: "", 3: "", 4: "", 5: "" });
+                    
                   }}
                   disabled={otpMutation.isPending}
                   className="px-5 py-2 rounded-lg border border-gray-400 hover:bg-gray-100 disabled:bg-gray-200 disabled:cursor-not-allowed transition"
@@ -418,10 +370,8 @@ const SignupPage = () => {
                 <button
                   type="button"
                   onClick={handleOtpSubmit}
-                  disabled={
-                    otpMutation.isPending || Object.values(otp).some((v) => v === "")
-                  }
-                  className="bg-black text-white px-5 py-2 rounded-lg hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed transition"
+                  
+                  className="bg-black text-white px-5 py-2 rounded-lg hover:bg-gray-800  transition"
                 >
                   {otpMutation.isPending ? "Verifying..." : "Verify & Create"}
                 </button>

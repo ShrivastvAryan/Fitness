@@ -5,10 +5,10 @@ const User=pgTable('user',{
     created_at:timestamp("created_at", { withTimezone: true }).defaultNow(),
     userName:text('userName').notNull(),
     email:text('email').notNull(),
-    phone:integer('phone').notNull(),
+    phone:text('phone').notNull(),
     address:text('address').notNull(),
     state:text('state').notNull(),
-    pincode:integer('pincode').notNull(),
+    pincode:text('pincode').notNull(),
     location:text('location').notNull()
 })
 

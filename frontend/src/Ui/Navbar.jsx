@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from "react"
+import React, { use, useState ,useEffect} from "react"
 import { Heart, ShoppingBag, Search, Menu, X } from "lucide-react"
 import {
   NavigationMenu,
@@ -10,9 +10,32 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
 import Link from "next/link"
+import useAuthStore from "@/useAuth"
 
 const Navbar = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  const{clearAuth}=useAuthStore();
+
+   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+   const [isLoggedOut, setIsLoggedOut] = useState(true);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if(!token){
+      setIsLoggedOut(true)
+    }
+    else{
+      setIsLoggedOut(false)
+    }
+  }, []);
+
+  const handleLogOut = () => {
+    clearAuth();
+    setIsLoggedOut(true);
+  };
+
 
   const NavList = [
     {
@@ -56,6 +79,8 @@ const Navbar = () => {
         <p className="cursor-pointer hover:underline">Join Us</p>
         <p className="cursor-pointer hover:underline">Login</p>
         <p className="cursor-pointer hover:underline">Help</p>
+        <p className="cursor-pointer hover:underline hover:text-red-700" onClick={handleLogOut}>Logout</p>
+        <p>{isLoggedOut}</p>
       </div>
 
       {/* Main Navbar */}
