@@ -9,7 +9,8 @@ const User=pgTable('user',{
     address:text('address').notNull(),
     state:text('state').notNull(),
     pincode:text('pincode').notNull(),
-    location:text('location').notNull()
+    location:text('location').notNull(),
+    cart:text('cart')
 })
 
 module.exports=User

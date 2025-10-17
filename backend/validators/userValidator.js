@@ -10,6 +10,7 @@ const userSchema = z.object({
   state: z.string().min(1, "State is required"),
   pincode: z.string().max(6),
   location: z.string().min(1, "Location is required"),
+  cart:z.array(z.string())
 });
 
 module.exports = userSchema;

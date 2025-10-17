@@ -10,6 +10,7 @@ const createProductSchema = z.object({
     original_price: z.number().int().nonnegative(),
     description: z.string(),
     isAvailable: z.boolean().optional(),
+    image:z.string()
 });
 
 const updateSchema = createProductSchema.partial().extend({

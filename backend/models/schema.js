@@ -12,6 +12,7 @@ const product = pgTable("product", {
   original_price: integer("original_price").notNull(),
   description: text("description").notNull(),
   isAvailable: boolean("isAvailable").default(true),
+  image:text('image')
 });
 
 module.exports = { product };
