@@ -144,4 +144,53 @@ const deleteProductById = async (req, res, next) => {
     }
 };
 
-module.exports = { createProduct, getAllProducts,getProductById,getProductByGender,getProductByCategory,deleteProductById,getProductByCategoryId};
+const getProductByCategoryAndGender=async(req,res,next)=>{
+    const{gender,category}=req.params
+
+    try {
+        const rows=await db
+        .select()
+        .from(product)
+        .where(and(eq(product.category,category),eq(product.gender,gender)))
+
+          if (rows.length === 0) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    return res.status(200).json({ data: rows});
+    } catch (error) {
+         console.error(error);
+    return res.status(500).json({ error: "Internal server error" });
+    }
+}
+
+const getProductByIdByCategoryandByGender=async(req,res,next)=>{
+    const{gender,category,id}=req.params;
+
+      try {
+        const rows = await db
+      .select()
+      .from(product)
+      .where(and(
+        eq(product.category, category),
+        eq(product.gender, gender),
+        eq(product.id, id)
+      ));
+          if (rows.length === 0) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    return res.status(200).json({ data: rows[0]});
+    } catch (error) {
+         console.error(error);
+    return res.status(500).json({ error: "Internal server error" });
+    }
+}
+
+
+
+module.exports = { createProduct, getAllProducts,getProductById,
+    getProductByGender,getProductByCategory,
+    deleteProductById,getProductByCategoryId,getProductByCategoryAndGender,
+    getProductByIdByCategoryandByGender
+};
