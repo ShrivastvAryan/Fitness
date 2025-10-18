@@ -1,3 +1,4 @@
+const { jsonb } = require("drizzle-orm/pg-core");
 const { pgTable, serial, text, integer, timestamp, boolean } = require("drizzle-orm/pg-core");
 
 const product = pgTable("product", {
@@ -7,7 +8,7 @@ const product = pgTable("product", {
   gender:text('gender').notNull(),
   category:text('category').notNull(),
   size: text("size").array().notNull(),
-  color: text("color").array().notNull(),
+  color: jsonb("color").notNull(),
   offer_price: integer("offer_price"),
   original_price: integer("original_price").notNull(),
   description: text("description").notNull(),

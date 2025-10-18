@@ -1,7 +1,7 @@
 const { product } = require('../models/schema'); // Corrected import
 const {db} =require('../models/db')
 const { createProductSchema } = require('../validators/productValidators');
-const { eq, sql } = require('drizzle-orm');
+const{and,eq}=require('drizzle-orm')
 
 const createProduct = async (req, res, next) => {
     try {
@@ -98,6 +98,26 @@ const getProductByCategory=async(req,res,next)=>{
     }
 }
 
+const getProductByCategoryId = async (req, res, next) => {
+  const { category, id } = req.params;
+
+  try {
+    const rows = await db
+      .select()
+      .from(product)
+      .where(and(eq(product.category, category), eq(product.id, id)));
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    return res.status(200).json({ data: rows[0] }); // probably just one product
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 const deleteProductById = async (req, res, next) => {
     const { id } = req.params;
     const productId = Number(id);
@@ -124,4 +144,4 @@ const deleteProductById = async (req, res, next) => {
     }
 };
 
-module.exports = { createProduct, getAllProducts,getProductById,getProductByGender,getProductByCategory,deleteProductById };
+module.exports = { createProduct, getAllProducts,getProductById,getProductByGender,getProductByCategory,deleteProductById,getProductByCategoryId};

@@ -5,7 +5,7 @@ const createProductSchema = z.object({
     gender:z.string(),
     category:z.string(),
     size: z.array(z.string()),
-    color: z.array(z.string()),
+    color: z.array(z.object()),
     offer_price: z.number().int().nonnegative().optional(),
     original_price: z.number().int().nonnegative(),
     description: z.string(),
