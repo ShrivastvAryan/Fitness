@@ -15,6 +15,28 @@ const Category = () => {
     price: "",
   });
 
+  const allSizes=[
+    'XS','S','M','L','XL','XXL'
+  ]
+
+  const allPrices=[
+    '0-500','500-1000','1000-2000','2000-3000','3000+'
+  ]
+
+  const { data: allProducts = [] } = useQuery({
+  queryKey: ['products'],
+  queryFn: async () => {
+    const res = await axios.get('http://localhost:5000/api/all-product')
+    return res.data.data
+  },
+})
+
+const allColor = allProducts
+  .flatMap(product => product.color) 
+  .filter((c, index, arr) => 
+    index === arr.findIndex(obj => obj.name === c.name)
+  )
+
   const { data: products = [], isLoading, isError } = useQuery({
     queryKey: ["product", category],
     queryFn: async () => {
@@ -41,54 +63,53 @@ const Category = () => {
         {/* Color Filter */}
         <div className="mb-8">
           <h3 className="font-semibold text-sm uppercase text-gray-700 mb-3">Color</h3>
-          <select
-            name="color"
-            onChange={handleFilterChange}
-            className="w-full border-2 border-gray-300 p-3 rounded-lg bg-white text-black font-medium focus:outline-none focus:border-black transition-colors"
-          >
-            <option value="">All Colors</option>
-            <option value="black">Black</option>
-            <option value="white">White</option>
-            <option value="red">Red</option>
-            <option value="blue">Blue</option>
-          </select>
+        <div className="flex gap-4 flex-wrap">
+  {allColor?.map((color, index) => (
+    <div
+      key={index}
+      onClick={() => handleFilterChange(color.name)}
+      className="flex items-center justify-center font-semibold w-10 h-10 rounded-full border border-black/40 hover:scale-110 transition-transform duration-300 ease-in-out cursor-pointer"
+      style={{ backgroundColor: color.code, color: color.name === "White" ? "black" : "white" }}
+    >
+      
+    </div>
+  ))}
+</div>
+
         </div>
 
         {/* Size Filter */}
         <div className="mb-8">
           <h3 className="font-semibold text-sm uppercase text-gray-700 mb-3">Size</h3>
-          <select
+          <div
             name="size"
             onChange={handleFilterChange}
-            className="w-full border-2 border-gray-300 p-3 rounded-lg bg-white text-black font-medium focus:outline-none focus:border-black transition-colors"
+            className="flex gap-4 flex-wrap"
           >
-            <option value="">All Sizes</option>
-            <option value="S">Small</option>
-            <option value="M">Medium</option>
-            <option value="L">Large</option>
-            <option value="XL">Extra Large</option>
-          </select>
+           {allSizes?.map((sizes,index)=>(
+            <div className=" flex items-center justify-center font-semibold w-10 h-10 rounded-full border border-black/40 hover:bg-black hover:text-white cursor-pointer hover:scale-110  transition-transform duration-300 ease-in-out" key={index}>{sizes}</div>
+           ))}
+          </div>
         </div>
 
         {/* Price Filter */}
         <div>
           <h3 className="font-semibold text-sm uppercase text-gray-700 mb-3">Price Range</h3>
-          <select
+         <div
             name="price"
             onChange={handleFilterChange}
-            className="w-full border-2 border-gray-300 p-3 rounded-lg bg-white text-black font-medium focus:outline-none focus:border-black transition-colors"
+            className="flex gap-4 flex-wrap"
           >
-            <option value="">All Prices</option>
-            <option value="low">Under ₹1000</option>
-            <option value="mid">₹1000 - ₹5000</option>
-            <option value="high">Above ₹5000</option>
-          </select>
+           {allPrices?.map((prices,index)=>(
+            <div className=" flex items-center justify-center font-semibold p-2 px-4 rounded-full border border-black/40 hover:bg-black hover:text-white cursor-pointer hover:scale-110  transition-transform duration-300 ease-in-out" key={index}>₹{prices}</div>
+           ))}
+          </div>
         </div>
 
         {/* Clear Filters Button */}
         <button
           onClick={() => setFilters({ color: "", size: "", price: "" })}
-          className="mt-8 w-full py-2 border-2 border-gray-300 rounded-lg font-semibold text-black hover:bg-gray-100 transition-colors"
+          className="mt-8 w-full py-2 border-2 border-gray-300 rounded-lg font-semibold text-black hover:bg-black hover:text-white hover:scale-110 duration-300 ease-in-out transition-transform cursor-pointer"
         >
           Clear Filters
         </button>
